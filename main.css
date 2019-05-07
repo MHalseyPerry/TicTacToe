@@ -1,0 +1,40 @@
+*, *:before, *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.board{
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height:100%;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+table tr:first-child td{
+    border-top: 0;
+}
+
+table tr:last-child td{
+    border-bottom: 0;
+}
+
+table tr td:first-child {
+    border-left: 0;
+}
+
+table tr td:last-child {
+    border-right: 0;
+}
+
+td {
+    text-align: center;
+    height: 100px;
+    width: 100px;
+    border: 2px solid black;
+}
