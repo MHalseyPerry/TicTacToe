@@ -14,24 +14,22 @@ const winCombos = [
     [2, 4, 6], //top right - bottom left
 ];
 const cells = document.querySelectorAll('.cell');
+const select = document.getElementById('players')
 
 const players = [
     'X',
     'O',
 ];
 
-let activePlayer = 1;
+let activePlayer;
 
-function startGame()
+function startGame(choice)
 {
+    select.style.display = 'none';
+    choice == 'X' ? activePlayer = 0 : activePlayer = 1;
     console.log("Player " + players[activePlayer] + " is starting.");
     playsBoard = Array.from(Array(9).keys());
-    for (let i = 0; i < cells.length; i++)
-    {
-        cells[i].style.removeProperty('background-color');
-        cells[i].innerText = '';
-        cells[i].addEventListener('click', turnClick, false);
-    }
+    initalizeCells();
 }
 
 function turnClick(cell)
@@ -45,9 +43,7 @@ function turnClick(cell)
             } else {
                 activePlayer == 0 ? activePlayer = 1 : activePlayer = 0;
             }
-
 }
-
 
 function checkWin(board, player)
 {
@@ -76,3 +72,18 @@ function gameOver(gameWon)
     }
 }
 
+function initalizeCells()
+{
+    for (let i = 0; i < cells.length; i++)
+    {
+        cells[i].style.removeProperty('background-color');
+        cells[i].innerText = '';
+        cells[i].addEventListener('click', turnClick, false);
+    }
+}
+
+function reset()
+{
+    initalizeCells();
+    select.style.display = 'flex';
+}

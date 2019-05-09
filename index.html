@@ -6,7 +6,15 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
 </head>
 <body>
+
+
         <div class="board">
+                    <div id=players>
+                        <p> Which player will start? </p>
+                        <button onClick="startGame('X')">X</button>
+                        <button onClick="startGame('O')">O</button>
+                    </div>
+
             <table>
                 <tr>
                     <td class="cell" id="0"></td>
@@ -27,7 +35,7 @@
                 </tr>
             </table>
 
-            <button onClick="startGame()">START/RESET</button>
+            <button onClick="reset()">RESET</button>
         </div>
     <script src="main.js"></script>
 </body>

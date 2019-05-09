@@ -7,13 +7,24 @@
 .board{
     display:flex;
     justify-content: center;
+    flex-direction: column;
     align-content: center;
     align-items: center;
-    height:100%;
+    margin-top: auto;
+    height:70%;
+}
+
+.players{
+    display:flex;
+    justify-content: center;
+    height: 10%;
+    flex-direction: column;
+    margin: 10px;
 }
 
 table{
     border-collapse: collapse;
+    margin: 10px;
 }
 
 table tr:first-child td{
