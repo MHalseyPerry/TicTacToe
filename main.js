@@ -1,8 +1,6 @@
-var origBoard;
-const playerOne = 'O';
-const playerTwo = 'X';
-var currentPlayer = Math.round(Math.random() * (2 - 1) + 1);
-console.log("Player " + currentPlayer + " is starting.");
+let playsBoard; // will become array holding each players choices
+
+
 const winCombos = [
     [0, 1, 2], //top left - top right
     [3, 4, 5], //middle left - middle right
@@ -16,33 +14,65 @@ const winCombos = [
     [2, 4, 6], //top right - bottom left
 ];
 const cells = document.querySelectorAll('.cell');
-startGame();
+
+const players = [
+    'X',
+    'O',
+];
+
+let activePlayer = 1;
 
 function startGame()
 {
-    origBoard = Array.from(Array(9).keys());
-    for (var i = 0; i < cells.length; i++)
+    console.log("Player " + players[activePlayer] + " is starting.");
+    playsBoard = Array.from(Array(9).keys());
+    for (let i = 0; i < cells.length; i++)
     {
+        cells[i].style.removeProperty('background-color');
         cells[i].innerText = '';
-        cells[i].addEventListener('click', turnClick(cells[i]), false);
+        cells[i].addEventListener('click', turnClick, false);
     }
 }
 
 function turnClick(cell)
 {
-    return function(){
-        if(currentPlayer == 1)
-        {
-            origBoard[cell.id] = playerOne;
-            cell.innerText = playerOne;
-            currentPlayer++;
-            console.log(origBoard);
-        } else {
-            origBoard[cell.id] = playerTwo;
-            cell.innerText = playerTwo;
-            currentPlayer--;
-            console.log(origBoard);
-        }
+            let target = cell.target.id;
+            playsBoard[target] = players[activePlayer];
+            document.getElementById(target).innerText = players[activePlayer];
+            let gameWon = checkWin(playsBoard, players[activePlayer]);
+            if (gameWon){
+                gameOver(gameWon);
+            } else {
+                activePlayer == 0 ? activePlayer = 1 : activePlayer = 0;
+            }
 
+}
+
+
+function checkWin(board, player)
+{
+    let plays = board.reduce((a, e, i) =>            // <------ididnt come up with this myself
+        (e === player) ? a.concat(i) : a, []);
+
+    let gameWon = null;
+
+    for (let [index,win] of winCombos.entries()){
+        if (win.every(elem => plays.indexOf(elem) > -1)) {
+            gameWon = {index: index, player: player};
+            break;
+        }
+    }
+    return gameWon
+}
+
+function gameOver(gameWon)
+{
+    for (let index of winCombos[gameWon.index]){
+        document.getElementById(index).style.backgroundColor =
+            gameWon.player == 'X' ? "blue" : "red";
+    }
+    for (let i = 0; i < cells.length; i++){
+        cells[i].removeEventListener('click', turnClick, false);
     }
 }
+
