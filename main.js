@@ -15,7 +15,8 @@ const winCombos = [
 ];
 const cells = document.querySelectorAll('.cell');
 const select = document.getElementById('players')
-
+const endGame = document.querySelector('.endgame');
+    const text = document.querySelector('.text');
 const players = [
     'X',
     'O',
@@ -34,15 +35,16 @@ function startGame(choice)
 
 function turnClick(cell)
 {
-            let target = cell.target.id;
-            playsBoard[target] = players[activePlayer];
-            document.getElementById(target).innerText = players[activePlayer];
-            let gameWon = checkWin(playsBoard, players[activePlayer]);
-            if (gameWon){
-                gameOver(gameWon);
-            } else {
-                activePlayer == 0 ? activePlayer = 1 : activePlayer = 0;
-            }
+    let target = cell.target.id;
+    playsBoard[target] = players[activePlayer];
+    document.getElementById(target).innerText = players[activePlayer];
+    let gameWon = checkWin(playsBoard, players[activePlayer]);
+    if (gameWon){
+        gameOver(gameWon);
+    } else {
+        checkDraw(playsBoard);
+        activePlayer == 0 ? activePlayer = 1 : activePlayer = 0;
+    }
 }
 
 function checkWin(board, player)
@@ -61,11 +63,29 @@ function checkWin(board, player)
     return gameWon
 }
 
+function checkDraw(board)
+{
+    let plays = board.reduce((a, e, i) =>            // <------ididnt come up with this myself
+    (e == 'X' || e == 'O') ? a.concat(i) : a, []);
+
+    if(plays.length == 9)
+    {
+        for (let i = 0; i < plays.length; i++){
+            document.getElementById(plays[i]).style.backgroundColor = "yellow";
+            endGame.style.display = "block";
+            text.innerText = "DRAW!";
+        }
+    }
+
+}
+
 function gameOver(gameWon)
 {
     for (let index of winCombos[gameWon.index]){
         document.getElementById(index).style.backgroundColor =
             gameWon.player == 'X' ? "blue" : "red";
+            endGame.style.display = "block";
+            text.innerText = "Player " + gameWon.player + " wins!";
     }
     for (let i = 0; i < cells.length; i++){
         cells[i].removeEventListener('click', turnClick, false);
@@ -85,5 +105,9 @@ function initalizeCells()
 function reset()
 {
     initalizeCells();
+    endGame.style.display = 'none';
     select.style.display = 'flex';
+    for (let i = 0; i < cells.length; i++){
+        cells[i].removeEventListener('click', turnClick, false);
+    }
 }
